@@ -1,7 +1,8 @@
-﻿using ChessTheoryNavigator.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+using ChessTheoryNavigator.Models;
 
 namespace ChessTheoryNavigator
 {
@@ -10,7 +11,6 @@ namespace ChessTheoryNavigator
         private readonly Guid START_BOARD = Guid.Empty;
 
         public MoveBook MoveBook { get; set; }
-        public Dictionary<Guid, MoveOptions> MoveDictionary { get; set; }
         public Enums.Color PlayerColor { get; set; }
 
         public Guid CurrentBoard { get; set; }
@@ -32,14 +32,12 @@ namespace ChessTheoryNavigator
         private void buttonWhite_Click(object sender, EventArgs e)
         {
             PlayerColor = Enums.Color.White;
-            MoveDictionary = MoveBook.PlayerWhite;
             ResetGame();
         }
 
         private void buttonBlack_Click(object sender, EventArgs e)
         {
             PlayerColor = Enums.Color.Black;
-            MoveDictionary = MoveBook.PlayerBlack;
             ResetGame();
         }
 
@@ -67,16 +65,11 @@ namespace ChessTheoryNavigator
             var movesList = isWhiteEnabled ? listBoxWhite : listBoxBlack;
             movesList.Items.Clear();
 
-            if (MoveDictionary.ContainsKey(CurrentBoard))
+            var legalMoves = MoveBook.GetLegalMoves(CurrentBoard, PlayerColor);
+            if (legalMoves.Any())
             {
-                var tempList = new List<string>();
-                foreach (var move in MoveDictionary[CurrentBoard].Moves)
-                {
-                    tempList.Add(move.Move);
-                }
-                tempList.Sort();
-                foreach (var entry in tempList)
-                    movesList.Items.Add(entry);
+                foreach (var legalMove in legalMoves)
+                    movesList.Items.Add(legalMove);
             }
             else
             {
@@ -118,33 +111,27 @@ namespace ChessTheoryNavigator
                 AlertEmptyMove();
                 return;
             }
-            if (MoveDictionary.ContainsKey(CurrentBoard))
+            if (MoveBook.DoesMoveExist(move, CurrentBoard, PlayerColor))
             {
-                var options = MoveDictionary[CurrentBoard];
-                foreach (var existingMove in options.Moves)
-                {
-                    if (existingMove.Move.Equals(move))
-                    {
-                        AlertDuplicateMove();
-                        return;
-                    }
-                }
+                AlertDuplicateMove();
+                return;
             }
 
-            AddNewMove(move);
+            MoveBook.AddMove(move, CurrentBoard, PlayerColor);
+
             var textField = CurrentTurn == Enums.Color.White ? addWhiteText : addBlackText;
             textField.Text = "";
             var listBox = CurrentTurn == Enums.Color.White ? listBoxWhite : listBoxBlack;
             listBox.Items.Add(move);
         }
 
-        private void AlertEmptyMove() =>
+        private static void AlertEmptyMove() =>
             Alert("Error", "No move entered");
 
-        private void AlertDuplicateMove() =>
+        private static void AlertDuplicateMove() =>
             Alert("Error", "Move already in book");
 
-        private void Alert(string caption, string message)
+        private static void Alert(string caption, string message)
         {
             var buttons = MessageBoxButtons.OK;
             MessageBox.Show(message, caption, buttons);
@@ -153,29 +140,6 @@ namespace ChessTheoryNavigator
         private void addBlackButton_Click(object sender, EventArgs e)
         {
             AddMove(addBlackText.Text);
-        }
-
-        private void AddNewMove(string move)
-        {
-            if (!MoveDictionary.ContainsKey(CurrentBoard))
-            {
-                var newOption = new MoveOptions()
-                {
-                    Board = CurrentBoard,
-                    Color = PlayerColor,
-                    Moves = new List<MoveState>()
-                };
-                MoveDictionary[CurrentBoard] = newOption;
-            }
-
-            var options = MoveDictionary[CurrentBoard];
-            var newMove = new MoveState()
-            {
-                StartBoard = CurrentBoard,
-                Move = move,
-                EndBoard = Guid.NewGuid()
-            };
-            options.Moves.Add(newMove);
         }
 
         private void moveWhite_Click(object sender, EventArgs e)
@@ -204,20 +168,12 @@ namespace ChessTheoryNavigator
 
         private void MakeMove(string move)
         {
-            var nextBoard = NextBoard(MoveDictionary[CurrentBoard], move);
+            var nextBoard = MoveBook.MakeMove(move, CurrentBoard, PlayerColor);
 
             CurrentBoard = nextBoard;
             CurrentTurn = CurrentTurn == Enums.Color.White ? Enums.Color.Black : Enums.Color.White;
 
             UpdateAfterMove();
-        }
-
-        private Guid NextBoard(MoveOptions options, string selectedMove)
-        {
-            foreach (var move in options.Moves)
-                if (move.Move.Equals(selectedMove))
-                    return move.EndBoard;
-            throw new Exception("Internal error: move not found");
         }
 
         private void listBoxWhite_SelectedIndexChanged(object sender, EventArgs e)

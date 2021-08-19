@@ -14,15 +14,17 @@ namespace ChessTheoryNavigator.Models
         {
         }
 
-        public SavedBook(MoveBook book)
+        public SavedBook(
+            Dictionary<Guid, MoveOptions> playerWhiteBook,
+            Dictionary<Guid, MoveOptions> playerBlackMoves)
         {
             BookInfo = new BookInfo()
             {
                 Version = "1"
             };
 
-            WhiteGameMoves = BuildListFromBook(book.PlayerWhite);
-            BlackGameMoves = BuildListFromBook(book.PlayerBlack);
+            WhiteGameMoves = BuildListFromBook(playerWhiteBook);
+            BlackGameMoves = BuildListFromBook(playerBlackMoves);
         }
 
         public SavedBook(string bookJson)
@@ -38,7 +40,7 @@ namespace ChessTheoryNavigator.Models
             return JsonSerializer.Serialize(this);
         }
 
-        private List<MoveOptions> BuildListFromBook(
+        private static List<MoveOptions> BuildListFromBook(
             IDictionary<Guid, MoveOptions> book)
         {
             var result = new List<MoveOptions>();
