@@ -8,6 +8,8 @@ namespace ChessTheoryNavigator
 {
     public class MoveBook
     {
+        public readonly Guid START_BOARD = Guid.Empty;
+
         private const string DEFAULT_FILE = @"..\..\..\..\book.json";
 
         private BookInfo BookInfo { get; set; }
@@ -118,6 +120,44 @@ namespace ChessTheoryNavigator
                 if (option.Move.Equals(move))
                     return option.EndBoard;
             throw new Exception($"Internal error: move {move} not found");
+        }
+
+        public List<string> ImportAlegbraicNotation(string game)
+        {
+            if (string.IsNullOrWhiteSpace(game))
+                throw new Exception("No game specified");
+
+            var result = new List<string>();
+
+            var rawMoves = game.Split(null);
+            foreach (var rawMove in rawMoves)
+            {
+                var currMoveTokens = rawMove.Split('.');
+                var curr = currMoveTokens[currMoveTokens.Length - 1].Trim();
+                if (!string.IsNullOrWhiteSpace(curr))
+                    result.Add(curr);
+            }
+            return result;
+        }
+
+        public ApplyImportedGameResults ApplyImportedGame(
+            List<string> moves,
+            Color playerColor)
+        {
+            var result = new ApplyImportedGameResults();
+            var board = START_BOARD;
+
+            foreach(var move in moves)
+            {
+                if (!DoesMoveExist(move, board, playerColor))
+                {
+                    result.NewMoves++;
+                    AddMove(move, board, playerColor);
+                }
+                result.Moves++;
+                board = MakeMove(move, board, playerColor);
+            }
+            return result;
         }
 
         private Dictionary<Guid, MoveOptions> GetMoveDictionary(Color playerColor)

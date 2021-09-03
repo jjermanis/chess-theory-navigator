@@ -42,6 +42,10 @@
             this.listBoxBlack = new System.Windows.Forms.ListBox();
             this.saveBookButton = new System.Windows.Forms.Button();
             this.notesText = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textAlgebraicNotation = new System.Windows.Forms.TextBox();
+            this.buttonPreviewAN = new System.Windows.Forms.Button();
+            this.buttonImportAN = new System.Windows.Forms.Button();
             this.groupBoxWhite.SuspendLayout();
             this.groupBoxBlack.SuspendLayout();
             this.SuspendLayout();
@@ -176,7 +180,7 @@
             // 
             // saveBookButton
             // 
-            this.saveBookButton.Location = new System.Drawing.Point(779, 415);
+            this.saveBookButton.Location = new System.Drawing.Point(779, 490);
             this.saveBookButton.Name = "saveBookButton";
             this.saveBookButton.Size = new System.Drawing.Size(75, 23);
             this.saveBookButton.TabIndex = 4;
@@ -194,11 +198,54 @@
             this.notesText.Size = new System.Drawing.Size(307, 259);
             this.notesText.TabIndex = 5;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(17, 429);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(91, 15);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Game Notation:";
+            // 
+            // textAlgebraicNotation
+            // 
+            this.textAlgebraicNotation.Location = new System.Drawing.Point(112, 429);
+            this.textAlgebraicNotation.Name = "textAlgebraicNotation";
+            this.textAlgebraicNotation.Size = new System.Drawing.Size(415, 23);
+            this.textAlgebraicNotation.TabIndex = 7;
+            this.textAlgebraicNotation.TextChanged += new System.EventHandler(this.textAlgebraicNotation_TextChanged);
+            // 
+            // buttonPreviewAN
+            // 
+            this.buttonPreviewAN.Enabled = false;
+            this.buttonPreviewAN.Location = new System.Drawing.Point(22, 472);
+            this.buttonPreviewAN.Name = "buttonPreviewAN";
+            this.buttonPreviewAN.Size = new System.Drawing.Size(93, 29);
+            this.buttonPreviewAN.TabIndex = 8;
+            this.buttonPreviewAN.Text = "Preview AN";
+            this.buttonPreviewAN.UseVisualStyleBackColor = true;
+            this.buttonPreviewAN.Click += new System.EventHandler(this.buttonPreviewAN_Click);
+            // 
+            // buttonImportAN
+            // 
+            this.buttonImportAN.Enabled = false;
+            this.buttonImportAN.Location = new System.Drawing.Point(121, 472);
+            this.buttonImportAN.Name = "buttonImportAN";
+            this.buttonImportAN.Size = new System.Drawing.Size(93, 29);
+            this.buttonImportAN.TabIndex = 9;
+            this.buttonImportAN.Text = "Import AN";
+            this.buttonImportAN.UseVisualStyleBackColor = true;
+            this.buttonImportAN.Click += new System.EventHandler(this.buttonImportAN_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(866, 450);
+            this.ClientSize = new System.Drawing.Size(866, 525);
+            this.Controls.Add(this.buttonImportAN);
+            this.Controls.Add(this.buttonPreviewAN);
+            this.Controls.Add(this.textAlgebraicNotation);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.notesText);
             this.Controls.Add(this.saveBookButton);
             this.Controls.Add(this.groupBoxBlack);
@@ -233,6 +280,10 @@
         private System.Windows.Forms.TextBox addBlackText;
         private System.Windows.Forms.Button addBlackButton;
         private System.Windows.Forms.TextBox notesText;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textAlgebraicNotation;
+        private System.Windows.Forms.Button buttonPreviewAN;
+        private System.Windows.Forms.Button buttonImportAN;
     }
 }
 

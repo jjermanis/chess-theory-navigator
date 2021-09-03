@@ -7,14 +7,13 @@ using ChessTheoryNavigator.Models;
 namespace ChessTheoryNavigator
 {
     public partial class MainForm : Form
-    {
-        private readonly Guid START_BOARD = Guid.Empty;
-
+    { 
         public MoveBook MoveBook { get; set; }
         public Enums.Color PlayerColor { get; set; }
-
         public Guid CurrentBoard { get; set; }
         public Enums.Color CurrentTurn { get; set; }
+
+        public List<string> ImportedGame { get; set; }
 
         public MainForm()
         {
@@ -50,7 +49,7 @@ namespace ChessTheoryNavigator
             addBlackText.Text = "";
 
             CurrentTurn = Enums.Color.White;
-            CurrentBoard = START_BOARD;
+            CurrentBoard = MoveBook.START_BOARD;
             UpdateAfterMove();
         }
 
@@ -184,6 +183,33 @@ namespace ChessTheoryNavigator
         private void listBoxBlack_SelectedIndexChanged(object sender, EventArgs e)
         {
             moveBlack.Enabled = true;
+        }
+
+        private void buttonPreviewAN_Click(object sender, EventArgs e)
+        {
+            ImportedGame = MoveBook.ImportAlegbraicNotation(textAlgebraicNotation.Text);
+
+            notesText.Text += "Algebraic Notation:\r\n";
+            for (var x=0; x < ImportedGame.Count; x+=2)
+            {
+                notesText.Text += $"{ImportedGame[x]}, {ImportedGame[x + 1]}\r\n";
+            }
+
+            buttonImportAN.Enabled = true;
+        }
+
+        private void buttonImportAN_Click(object sender, EventArgs e)
+        {
+            var result = MoveBook.ApplyImportedGame(ImportedGame, PlayerColor);
+            notesText.Text += $"Import complete.  {result.Moves} moves, {result.NewMoves} moves added\r\n";
+            buttonPreviewAN.Enabled = false;
+            buttonImportAN.Enabled = false;
+            textAlgebraicNotation.Text = "";
+        }
+
+        private void textAlgebraicNotation_TextChanged(object sender, EventArgs e)
+        {
+            buttonPreviewAN.Enabled = !String.IsNullOrWhiteSpace(textAlgebraicNotation.Text);
         }
     }
 }
