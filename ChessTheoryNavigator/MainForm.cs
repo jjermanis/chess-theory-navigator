@@ -28,6 +28,13 @@ namespace ChessTheoryNavigator
             SetBlackActive(false);
         }
 
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MoveBook.IsDirty && 
+                Prompt("Save?", "Changes have been made to the book. Would like to save?"))
+                MoveBook.Save();
+        }
+
         private void buttonWhite_Click(object sender, EventArgs e)
         {
             PlayerColor = Enums.Color.White;
@@ -134,6 +141,19 @@ namespace ChessTheoryNavigator
         {
             var buttons = MessageBoxButtons.OK;
             MessageBox.Show(message, caption, buttons);
+        }
+
+        private static bool Prompt(string caption, string message)
+        {
+            var buttons = MessageBoxButtons.YesNo;
+            var result = MessageBox.Show(message, caption, buttons);
+
+            return result switch
+            {
+                DialogResult.Yes => true,
+                DialogResult.No => false,
+                _ => throw new Exception($"Unexpected dialog result: {result}")
+            };
         }
 
         private void addBlackButton_Click(object sender, EventArgs e)

@@ -12,12 +12,14 @@ namespace ChessTheoryNavigator
 
         private const string DEFAULT_FILE = @"..\..\..\..\book.json";
 
+        public bool IsDirty { get; set; }
         private BookInfo BookInfo { get; set; }
         private Dictionary<Guid, MoveOptions> PlayerWhite { get; set; }
         private Dictionary<Guid, MoveOptions> PlayerBlack { get; set; }
 
         public MoveBook()
         {
+            IsDirty = false;
             BookInfo = new BookInfo();
             PlayerWhite = new Dictionary<Guid, MoveOptions>();
             PlayerBlack = new Dictionary<Guid, MoveOptions>();
@@ -25,6 +27,8 @@ namespace ChessTheoryNavigator
 
         public void Load()
         {
+            IsDirty = false;
+
             var json = File.ReadAllText(DEFAULT_FILE);
 
             var savedBook = new SavedBook(json);
@@ -46,6 +50,8 @@ namespace ChessTheoryNavigator
             var savedBook = new SavedBook(PlayerWhite, PlayerBlack);
 
             File.WriteAllText(DEFAULT_FILE, savedBook.ToString());
+
+            IsDirty = false;
         }
 
         public void AddMove(
@@ -76,6 +82,7 @@ namespace ChessTheoryNavigator
                 EndBoard = Guid.NewGuid()
             };
             options.Moves.Add(newMove);
+            IsDirty = true;
         }
 
         public List<string> GetLegalMoves(
