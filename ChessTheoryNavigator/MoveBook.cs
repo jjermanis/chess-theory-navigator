@@ -9,18 +9,17 @@ namespace ChessTheoryNavigator
     public class MoveBook
     {
         public readonly Guid START_BOARD = Guid.Empty;
-
         private const string DEFAULT_FILE = @"..\..\..\..\book.json";
+        private BookInfo _bookInfo;
 
         public bool IsDirty { get; set; }
-        private BookInfo BookInfo { get; set; }
         private Dictionary<Guid, MoveOptions> PlayerWhite { get; set; }
         private Dictionary<Guid, MoveOptions> PlayerBlack { get; set; }
 
         public MoveBook()
         {
             IsDirty = false;
-            BookInfo = new BookInfo();
+            _bookInfo = new BookInfo();
             PlayerWhite = new Dictionary<Guid, MoveOptions>();
             PlayerBlack = new Dictionary<Guid, MoveOptions>();
         }
@@ -33,7 +32,7 @@ namespace ChessTheoryNavigator
 
             var savedBook = new SavedBook(json);
 
-            this.BookInfo = savedBook.BookInfo;
+            _bookInfo = savedBook.BookInfo;
 
             foreach (var move in savedBook.WhiteGameMoves)
             {
@@ -140,7 +139,7 @@ namespace ChessTheoryNavigator
             foreach (var rawMove in rawMoves)
             {
                 var currMoveTokens = rawMove.Split('.');
-                var curr = currMoveTokens[currMoveTokens.Length - 1].Trim();
+                var curr = currMoveTokens[^1].Trim();
                 if (!string.IsNullOrWhiteSpace(curr))
                     result.Add(curr);
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using ChessTheoryNavigator.Models;
 
@@ -12,6 +13,7 @@ namespace ChessTheoryNavigator
         public Enums.Color PlayerColor { get; set; }
         public Guid CurrentBoard { get; set; }
         public Enums.Color CurrentTurn { get; set; }
+        public List<string> Moves { get; set; }
 
         public List<string> ImportedGame { get; set; }
 
@@ -54,9 +56,11 @@ namespace ChessTheoryNavigator
             listBoxBlack.Items.Clear();
             addWhiteText.Text = "";
             addBlackText.Text = "";
+            labelGame.Text = "";
 
             CurrentTurn = Enums.Color.White;
             CurrentBoard = MoveBook.START_BOARD;
+            Moves = new List<string>();
             UpdateAfterMove();
         }
 
@@ -187,12 +191,29 @@ namespace ChessTheoryNavigator
 
         private void MakeMove(string move)
         {
+            UpdateGameHistory(move);
+
             var nextBoard = MoveBook.MakeMove(move, CurrentBoard, PlayerColor);
 
             CurrentBoard = nextBoard;
             CurrentTurn = CurrentTurn == Enums.Color.White ? Enums.Color.Black : Enums.Color.White;
 
             UpdateAfterMove();
+        }
+
+        private void UpdateGameHistory(string move)
+        {
+            Moves.Add(move);
+
+            var sb = new StringBuilder();
+            for (int i=0; i<Moves.Count; i+= 2)
+            {
+                sb.Append($"{(i/2)+1}.");
+                sb.Append($"{Moves[i]} ");
+                if (i + 1 < Moves.Count)
+                    sb.Append($"{Moves[i + 1]} ");
+            }
+            labelGame.Text = sb.ToString();
         }
 
         private void listBoxWhite_SelectedIndexChanged(object sender, EventArgs e)

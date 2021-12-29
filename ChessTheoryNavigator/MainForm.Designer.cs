@@ -46,6 +46,7 @@
             this.textAlgebraicNotation = new System.Windows.Forms.TextBox();
             this.buttonPreviewAN = new System.Windows.Forms.Button();
             this.buttonImportAN = new System.Windows.Forms.Button();
+            this.labelGame = new System.Windows.Forms.Label();
             this.groupBoxWhite.SuspendLayout();
             this.groupBoxBlack.SuspendLayout();
             this.SuspendLayout();
@@ -78,14 +79,14 @@
             this.groupBoxWhite.Controls.Add(this.listBoxWhite);
             this.groupBoxWhite.Location = new System.Drawing.Point(16, 54);
             this.groupBoxWhite.Name = "groupBoxWhite";
-            this.groupBoxWhite.Size = new System.Drawing.Size(247, 364);
+            this.groupBoxWhite.Size = new System.Drawing.Size(247, 324);
             this.groupBoxWhite.TabIndex = 2;
             this.groupBoxWhite.TabStop = false;
             this.groupBoxWhite.Text = "White";
             // 
             // addWhiteText
             // 
-            this.addWhiteText.Location = new System.Drawing.Point(99, 320);
+            this.addWhiteText.Location = new System.Drawing.Point(99, 291);
             this.addWhiteText.Name = "addWhiteText";
             this.addWhiteText.Size = new System.Drawing.Size(137, 23);
             this.addWhiteText.TabIndex = 5;
@@ -93,7 +94,7 @@
             // addWhiteButton
             // 
             this.addWhiteButton.Enabled = false;
-            this.addWhiteButton.Location = new System.Drawing.Point(11, 321);
+            this.addWhiteButton.Location = new System.Drawing.Point(11, 292);
             this.addWhiteButton.Name = "addWhiteButton";
             this.addWhiteButton.Size = new System.Drawing.Size(75, 23);
             this.addWhiteButton.TabIndex = 4;
@@ -104,7 +105,7 @@
             // moveWhite
             // 
             this.moveWhite.Enabled = false;
-            this.moveWhite.Location = new System.Drawing.Point(11, 292);
+            this.moveWhite.Location = new System.Drawing.Point(11, 263);
             this.moveWhite.Name = "moveWhite";
             this.moveWhite.Size = new System.Drawing.Size(75, 23);
             this.moveWhite.TabIndex = 3;
@@ -119,7 +120,7 @@
             this.listBoxWhite.ItemHeight = 15;
             this.listBoxWhite.Location = new System.Drawing.Point(11, 27);
             this.listBoxWhite.Name = "listBoxWhite";
-            this.listBoxWhite.Size = new System.Drawing.Size(226, 259);
+            this.listBoxWhite.Size = new System.Drawing.Size(226, 214);
             this.listBoxWhite.TabIndex = 0;
             this.listBoxWhite.SelectedIndexChanged += new System.EventHandler(this.listBoxWhite_SelectedIndexChanged);
             this.listBoxWhite.DoubleClick += new System.EventHandler(this.listBoxWhite_DoubleClick);
@@ -132,14 +133,14 @@
             this.groupBoxBlack.Controls.Add(this.listBoxBlack);
             this.groupBoxBlack.Location = new System.Drawing.Point(281, 54);
             this.groupBoxBlack.Name = "groupBoxBlack";
-            this.groupBoxBlack.Size = new System.Drawing.Size(247, 364);
+            this.groupBoxBlack.Size = new System.Drawing.Size(247, 324);
             this.groupBoxBlack.TabIndex = 3;
             this.groupBoxBlack.TabStop = false;
             this.groupBoxBlack.Text = "Black";
             // 
             // addBlackText
             // 
-            this.addBlackText.Location = new System.Drawing.Point(100, 320);
+            this.addBlackText.Location = new System.Drawing.Point(100, 291);
             this.addBlackText.Name = "addBlackText";
             this.addBlackText.Size = new System.Drawing.Size(137, 23);
             this.addBlackText.TabIndex = 6;
@@ -147,7 +148,7 @@
             // addBlackButton
             // 
             this.addBlackButton.Enabled = false;
-            this.addBlackButton.Location = new System.Drawing.Point(11, 321);
+            this.addBlackButton.Location = new System.Drawing.Point(11, 292);
             this.addBlackButton.Name = "addBlackButton";
             this.addBlackButton.Size = new System.Drawing.Size(75, 23);
             this.addBlackButton.TabIndex = 6;
@@ -158,7 +159,7 @@
             // moveBlack
             // 
             this.moveBlack.Enabled = false;
-            this.moveBlack.Location = new System.Drawing.Point(11, 292);
+            this.moveBlack.Location = new System.Drawing.Point(11, 263);
             this.moveBlack.Name = "moveBlack";
             this.moveBlack.Size = new System.Drawing.Size(75, 23);
             this.moveBlack.TabIndex = 3;
@@ -173,7 +174,7 @@
             this.listBoxBlack.ItemHeight = 15;
             this.listBoxBlack.Location = new System.Drawing.Point(11, 27);
             this.listBoxBlack.Name = "listBoxBlack";
-            this.listBoxBlack.Size = new System.Drawing.Size(226, 259);
+            this.listBoxBlack.Size = new System.Drawing.Size(226, 214);
             this.listBoxBlack.TabIndex = 0;
             this.listBoxBlack.SelectedIndexChanged += new System.EventHandler(this.listBoxBlack_SelectedIndexChanged);
             this.listBoxBlack.DoubleClick += new System.EventHandler(this.listBoxBlack_DoubleClick);
@@ -237,11 +238,20 @@
             this.buttonImportAN.UseVisualStyleBackColor = true;
             this.buttonImportAN.Click += new System.EventHandler(this.buttonImportAN_Click);
             // 
+            // labelGame
+            // 
+            this.labelGame.AutoSize = true;
+            this.labelGame.Location = new System.Drawing.Point(17, 388);
+            this.labelGame.Name = "labelGame";
+            this.labelGame.Size = new System.Drawing.Size(0, 15);
+            this.labelGame.TabIndex = 10;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(866, 525);
+            this.Controls.Add(this.labelGame);
             this.Controls.Add(this.buttonImportAN);
             this.Controls.Add(this.buttonPreviewAN);
             this.Controls.Add(this.textAlgebraicNotation);
@@ -285,6 +295,7 @@
         private System.Windows.Forms.TextBox textAlgebraicNotation;
         private System.Windows.Forms.Button buttonPreviewAN;
         private System.Windows.Forms.Button buttonImportAN;
+        private System.Windows.Forms.Label labelGame;
     }
 }
 
